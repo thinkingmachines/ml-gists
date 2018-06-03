@@ -1,7 +1,16 @@
 ---
-- hosts: all
+- hosts: localhost
   vars:
     conda_home: /opt/conda
   tasks:
   - name: create conda home
     shell: sudo mkdir -p {{ conda_home }} && sudo chown -R $USER:$USER {{ conda_home }}
+
+  - name: install apt packages
+    apt:
+      name:
+      - build-essential
+      - git
+      - bzip2
+      update_cache: yes
+      state: latest

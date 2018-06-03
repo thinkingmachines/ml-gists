@@ -2,6 +2,7 @@
 - hosts: localhost
   vars:
     conda_home: /opt/conda
+    conda_installer: /opt/conda/anaconda.sh
   tasks:
   - name: create conda home
     shell: sudo mkdir -p {{ conda_home }} && sudo chown -R $USER:$USER {{ conda_home }}
@@ -14,3 +15,17 @@
       - bzip2
       update_cache: yes
       state: latest
+    become: yes
+    become_method: sudo
+ 
+  - name: download anaconda installer
+    get_url:
+      url: https://repo.continuum.io/archive/Anaconda3-5.1.0-Linux-x86_64.sh
+      dest: "{{ conda_installer }}"
+      mode: 0755
+
+  - name: install anaconda
+    shell: bash {{ conda_installer }} -b -u -p {{ conda_home }}
+
+  - name: install jupyter extension
+    shell: pip install jupyter_http_over_ws && jupyter serverextension enable --py jupyter_http_over_ws

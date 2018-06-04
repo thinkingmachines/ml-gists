@@ -32,7 +32,7 @@
     lineinfile:
       dest: $HOME/.bashrc
       regexp: "# ansible-anaconda-path"
-      line: "$PATH=$PATH:{{ conda_home_bin }}  # ansible-anaconda-path"
+      line: "PATH=$PATH:{{ conda_home_bin }}  # ansible-anaconda-path"
 
   - name: install jupyter extension
     shell: ./pip install jupyter_http_over_ws && ./jupyter serverextension enable --py jupyter_http_over_ws --user

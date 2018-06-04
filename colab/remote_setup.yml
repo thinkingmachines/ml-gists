@@ -2,6 +2,7 @@
 - hosts: localhost
   vars:
     conda_home: /opt/conda
+    conda_home_bin: /opt/conda/bin
     conda_installer: /opt/conda/anaconda.sh
   tasks:
   - name: create conda home
@@ -27,5 +28,13 @@
   - name: install anaconda
     shell: bash {{ conda_installer }} -b -u -p {{ conda_home }}
 
+  - name: add conda path to path .bashrc
+    lineinfile:
+      dest: $HOME/.bashrc
+      regexp: "# ansible-anaconda-path"
+      line: "$PATH=$PATH:{{ conda_home_bin }}  # ansible-anaconda-path"
+
   - name: install jupyter extension
-    shell: pip install jupyter_http_over_ws && jupyter serverextension enable --py jupyter_http_over_ws
+    shell: ./pip install jupyter_http_over_ws && ./jupyter serverextension enable --py jupyter_http_over_ws --user
+    args:
+      chdir: "{{ conda_home_bin }}"

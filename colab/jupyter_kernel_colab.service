@@ -1,0 +1,11 @@
+[Unit]
+Description=JupyterKernelColab
+After=syslog.target network.target
+
+[Service]
+User=%i
+Environment="PATH=/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/opt/conda/bin"
+ExecStart=/opt/conda/bin/jupyter notebook --NotebookApp.allow_origin='https://colab.research.google.com' --port=8888
+
+[Install]
+WantedBy=multi-user.target

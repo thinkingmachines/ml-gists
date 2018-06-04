@@ -38,3 +38,19 @@
     shell: ./pip install jupyter_http_over_ws && ./jupyter serverextension enable --py jupyter_http_over_ws --user
     args:
       chdir: "{{ conda_home_bin }}"
+      
+  - name: install systemd service
+    copy:
+      src: jupyter-colab@.service
+    dest: /etc/systemd/system/
+    become: yes
+    become_method: sudo
+
+  - name: enable service
+    systemd:
+      name: "jupyter-colab@{{ lookup('env','USER') }}.service" 
+      state: started
+      enabled: True
+      daemon_reload: yes
+    become: yes
+    become_method: sudo

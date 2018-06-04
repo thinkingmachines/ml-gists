@@ -42,7 +42,7 @@
   - name: install systemd service
     copy:
       src: jupyter-colab@.service
-    dest: /etc/systemd/system/
+      dest: /etc/systemd/system/
     become: yes
     become_method: sudo
 
